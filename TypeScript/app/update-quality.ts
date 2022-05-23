@@ -12,53 +12,73 @@ export const enum ItemNames {
 }
 
 export function updateQuality(items: Item[]): Item[] {
-  return items.map((item) => {
-    if (item.name != ItemNames.SULFURAS) {
-      item.sellIn = item.sellIn - 1;
+  return items.map(getNewItem);
+}
+
+function getNewItem(item: Item): Item {
+  const sellIn = getNewSellIn(item);
+  // Quality relies on the updated sellIn property.
+  const quality = getNewQuality({...item, sellIn});
+  return {
+    ...item,
+    sellIn,
+    quality,
+  };
+}
+
+function getNewSellIn(item: Item): number {
+  switch (item.name) {
+    case ItemNames.SULFURAS:
+      return item.sellIn;
+    default:
+      return item.sellIn - 1;
+  }
+}
+
+function getNewQuality(item: Item): number {
+  let newQuality = item.quality;
+  if (
+    item.name != ItemNames.AGED_BRIE &&
+    item.name != ItemNames.BACKSTAGE_PASS
+  ) {
+    if (newQuality > 0) {
+      if (item.name != ItemNames.SULFURAS) {
+        newQuality = newQuality - 1;
+      }
     }
-    if (
-      item.name != ItemNames.AGED_BRIE &&
-      item.name != ItemNames.BACKSTAGE_PASS
-    ) {
-      if (item.quality > 0) {
-        if (item.name != ItemNames.SULFURAS) {
-          item.quality = item.quality - 1;
+  } else {
+    if (newQuality < 50) {
+      newQuality = newQuality + 1;
+      if (item.name == ItemNames.BACKSTAGE_PASS) {
+        if (item.sellIn < 10) {
+          if (newQuality < 50) {
+            newQuality = newQuality + 1;
+          }
+        }
+        if (item.sellIn < 5) {
+          if (newQuality < 50) {
+            newQuality = newQuality + 1;
+          }
         }
       }
-    } else {
-      if (item.quality < 50) {
-        item.quality = item.quality + 1;
-        if (item.name == ItemNames.BACKSTAGE_PASS) {
-          if (item.sellIn < 10) {
-            if (item.quality < 50) {
-              item.quality = item.quality + 1;
-            }
-          }
-          if (item.sellIn < 5) {
-            if (item.quality < 50) {
-              item.quality = item.quality + 1;
-            }
-          }
-        }
-      }
     }
-    if (item.sellIn < 0) {
-      if (item.name != ItemNames.AGED_BRIE) {
-        if (item.name != ItemNames.BACKSTAGE_PASS) {
-          if (item.quality > 0) {
-            if (item.name != ItemNames.SULFURAS) {
-              item.quality = item.quality - 1;
-            }
+  }
+  if (item.sellIn < 0) {
+    if (item.name != ItemNames.AGED_BRIE) {
+      if (item.name != ItemNames.BACKSTAGE_PASS) {
+        if (newQuality > 0) {
+          if (item.name != ItemNames.SULFURAS) {
+            newQuality = newQuality - 1;
           }
-        } else {
-          item.quality = item.quality - item.quality;
         }
       } else {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1;
-        }
+        newQuality = 0;
+      }
+    } else {
+      if (newQuality < 50) {
+        newQuality = newQuality + 1;
       }
     }
-    return item;
-  });
+  }
+  return newQuality;
 }
