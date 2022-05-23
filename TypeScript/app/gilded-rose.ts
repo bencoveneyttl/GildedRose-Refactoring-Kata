@@ -28,8 +28,9 @@ export class GildedRose {
   updateQuality() {
     // Just ignore the structure of these files we cannot change.
     // I want to write functional code...
-    return updateQuality(this.items).map(
+    this.items = updateQuality(this.items).map(
       ({ name, sellIn, quality }) => new Item(name, sellIn, quality)
     );
+    return this.items;
   }
 }
