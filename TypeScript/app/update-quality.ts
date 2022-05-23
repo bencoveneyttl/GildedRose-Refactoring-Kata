@@ -35,6 +35,8 @@ function getNewSellIn(item: Item): number {
   }
 }
 
+const MAX_QUALITY = 50;
+
 function getNewQuality(item: Item): number {
   let newQuality = item.quality;
   if (
@@ -47,16 +49,16 @@ function getNewQuality(item: Item): number {
       }
     }
   } else {
-    if (newQuality < 50) {
+    if (newQuality < MAX_QUALITY) {
       newQuality = newQuality + 1;
       if (item.name == ItemNames.BACKSTAGE_PASS) {
         if (item.sellIn < 10) {
-          if (newQuality < 50) {
+          if (newQuality < MAX_QUALITY) {
             newQuality = newQuality + 1;
           }
         }
         if (item.sellIn < 5) {
-          if (newQuality < 50) {
+          if (newQuality < MAX_QUALITY) {
             newQuality = newQuality + 1;
           }
         }
@@ -75,7 +77,7 @@ function getNewQuality(item: Item): number {
         newQuality = 0;
       }
     } else {
-      if (newQuality < 50) {
+      if (newQuality < MAX_QUALITY) {
         newQuality = newQuality + 1;
       }
     }
