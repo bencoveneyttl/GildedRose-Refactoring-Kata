@@ -4,7 +4,7 @@ export type Item = {
   quality: number;
 };
 
-export const enum ItemNames {
+export const enum Names {
   AGED_BRIE = "Aged Brie",
   SULFURAS = "Sulfuras, Hand of Ragnaros",
   BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert",
@@ -14,49 +14,46 @@ export const enum ItemNames {
 const MAX_QUALITY = 50;
 
 export function updateQuality(items: Item[]): Item[] {
-  return items.map(getNewItem);
+  return items.map((item) => {
+    const sellIn = nextSellIn(item);
+    const quality = clamp(nextQuality({ ...item, sellIn }), 0, MAX_QUALITY);
+    return {
+      ...item,
+      sellIn,
+      quality,
+    };
+  });
 }
 
-function getNewItem(item: Item): Item {
-  const sellIn = getNewSellIn(item);
-  // Quality relies on the updated sellIn property.
-  const quality = clamp(getNewQuality({ ...item, sellIn }), 0, MAX_QUALITY);
-  return {
-    ...item,
-    sellIn,
-    quality,
-  };
-}
-
-function getNewSellIn(item: Item): number {
-  switch (item.name) {
-    case ItemNames.SULFURAS:
-      return item.sellIn;
+function nextSellIn({name, sellIn}: Item): number {
+  switch (name) {
+    case Names.SULFURAS:
+      return sellIn;
     default:
-      return item.sellIn - 1;
+      return sellIn - 1;
   }
 }
 
-function getNewQuality(item: Item): number {
-  const expired = item.sellIn < 0;
-  switch (item.name) {
-    case ItemNames.AGED_BRIE:
-      return item.quality + (expired ? 2 : 1);
-    case ItemNames.BACKSTAGE_PASS:
+function nextQuality({name, quality, sellIn}: Item): number {
+  const expired = sellIn < 0;
+  switch (name) {
+    case Names.AGED_BRIE:
+      return quality + (expired ? 2 : 1);
+    case Names.BACKSTAGE_PASS:
       if (expired) {
         return 0;
-      } else if (item.sellIn < 5) {
-        return item.quality + 3;
-      } else if (item.sellIn < 10) {
-        return item.quality + 2;
+      } else if (sellIn < 5) {
+        return quality + 3;
+      } else if (sellIn < 10) {
+        return quality + 2;
       }
-      return item.quality + 1;
-    case ItemNames.CONJURED:
-      return item.quality - 2;
-    case ItemNames.SULFURAS:
-      return item.quality;
+      return quality + 1;
+    case Names.CONJURED:
+      return quality - 2;
+    case Names.SULFURAS:
+      return quality;
     default:
-      return item.quality - (expired ? 2 : 1);
+      return quality - (expired ? 2 : 1);
   }
 }
 

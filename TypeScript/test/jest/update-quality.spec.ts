@@ -1,4 +1,4 @@
-import { Item, ItemNames, updateQuality } from "@/update-quality";
+import { Item, Names, updateQuality } from "@/update-quality";
 
 describe("updateQuality", () => {
   it("should handle empty input", () => {
@@ -30,57 +30,57 @@ describe("updateQuality", () => {
 
   it("should increase the quality for aged brie as time passes", () => {
     expect(updateQuality([
-      { name: ItemNames.AGED_BRIE, quality: 5, sellIn: 5 },
-      { name: ItemNames.AGED_BRIE, quality: 10, sellIn: 1 },
-      { name: ItemNames.AGED_BRIE, quality: 1, sellIn: -1 },
+      { name: Names.AGED_BRIE, quality: 5, sellIn: 5 },
+      { name: Names.AGED_BRIE, quality: 10, sellIn: 1 },
+      { name: Names.AGED_BRIE, quality: 1, sellIn: -1 },
     ])).toMatchSnapshot();
   });
 
   it("should never increase quality more than 50", () => {
     expect(updateQuality([
-      { name: ItemNames.AGED_BRIE, quality: 50, sellIn: 1 },
-      { name: ItemNames.AGED_BRIE, quality: 50, sellIn: -1 },
-      { name: ItemNames.AGED_BRIE, quality: 49, sellIn: -1 },
+      { name: Names.AGED_BRIE, quality: 50, sellIn: 1 },
+      { name: Names.AGED_BRIE, quality: 50, sellIn: -1 },
+      { name: Names.AGED_BRIE, quality: 49, sellIn: -1 },
     ])).toMatchSnapshot();
   });
 
   it("should never increase quality more than 50", () => {
     expect(updateQuality([
-      { name: ItemNames.AGED_BRIE, quality: 50, sellIn: 1 },
-      { name: ItemNames.AGED_BRIE, quality: 50, sellIn: -1 },
-      { name: ItemNames.AGED_BRIE, quality: 49, sellIn: -1 },
+      { name: Names.AGED_BRIE, quality: 50, sellIn: 1 },
+      { name: Names.AGED_BRIE, quality: 50, sellIn: -1 },
+      { name: Names.AGED_BRIE, quality: 49, sellIn: -1 },
     ])).toMatchSnapshot();
   });
 
   it('should never update the sell by date or quality of "Sulfuras"', () => {
     expect(updateQuality([
-      { name: ItemNames.SULFURAS, quality: 5, sellIn: 5 },
-      { name: ItemNames.SULFURAS, quality: 10, sellIn: 1 },
-      { name: ItemNames.SULFURAS, quality: 1, sellIn: 10 },
+      { name: Names.SULFURAS, quality: 5, sellIn: 5 },
+      { name: Names.SULFURAS, quality: 10, sellIn: 1 },
+      { name: Names.SULFURAS, quality: 1, sellIn: 10 },
     ])).toMatchSnapshot();
   });
 
   it('should increase the quality of "Backstage Passes" by 2 when the sell by date is 10 days or less', () => {
     expect(updateQuality([
-      { name: ItemNames.BACKSTAGE_PASS, quality: 10, sellIn: 6 },
-      { name: ItemNames.BACKSTAGE_PASS, quality: 10, sellIn: 10 },
-      { name: ItemNames.BACKSTAGE_PASS, quality: 10, sellIn: 11 },
+      { name: Names.BACKSTAGE_PASS, quality: 10, sellIn: 6 },
+      { name: Names.BACKSTAGE_PASS, quality: 10, sellIn: 10 },
+      { name: Names.BACKSTAGE_PASS, quality: 10, sellIn: 11 },
     ])).toMatchSnapshot();
   });
 
   it('should increase the quality of "Backstage Passes" by 3 when the sell by date is 5 days or less', () => {
     expect(updateQuality([
-      { name: ItemNames.BACKSTAGE_PASS, quality: 10, sellIn: 5 },
-      { name: ItemNames.BACKSTAGE_PASS, quality: 10, sellIn: 3 },
-      { name: ItemNames.BACKSTAGE_PASS, quality: 10, sellIn: 1 },
+      { name: Names.BACKSTAGE_PASS, quality: 10, sellIn: 5 },
+      { name: Names.BACKSTAGE_PASS, quality: 10, sellIn: 3 },
+      { name: Names.BACKSTAGE_PASS, quality: 10, sellIn: 1 },
     ])).toMatchSnapshot();
   });
 
   it('should drop the quality of "Backstage Passes" to 0 when the sell by date has passed', () => {
     expect(updateQuality([
-      { name: ItemNames.BACKSTAGE_PASS, quality: 10, sellIn: 0 },
-      { name: ItemNames.BACKSTAGE_PASS, quality: 10, sellIn: -1 },
-      { name: ItemNames.BACKSTAGE_PASS, quality: 10, sellIn: -2 },
+      { name: Names.BACKSTAGE_PASS, quality: 10, sellIn: 0 },
+      { name: Names.BACKSTAGE_PASS, quality: 10, sellIn: -1 },
+      { name: Names.BACKSTAGE_PASS, quality: 10, sellIn: -2 },
     ])).toMatchSnapshot();
   });
 
