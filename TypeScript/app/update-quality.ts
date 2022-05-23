@@ -13,6 +13,9 @@ export const enum ItemNames {
 
 export function updateQuality(items: Item[]): Item[] {
   return items.map((item) => {
+    if (item.name != ItemNames.SULFURAS) {
+      item.sellIn = item.sellIn - 1;
+    }
     if (
       item.name != ItemNames.AGED_BRIE &&
       item.name != ItemNames.BACKSTAGE_PASS
@@ -26,21 +29,18 @@ export function updateQuality(items: Item[]): Item[] {
       if (item.quality < 50) {
         item.quality = item.quality + 1;
         if (item.name == ItemNames.BACKSTAGE_PASS) {
-          if (item.sellIn < 11) {
+          if (item.sellIn < 10) {
             if (item.quality < 50) {
               item.quality = item.quality + 1;
             }
           }
-          if (item.sellIn < 6) {
+          if (item.sellIn < 5) {
             if (item.quality < 50) {
               item.quality = item.quality + 1;
             }
           }
         }
       }
-    }
-    if (item.name != ItemNames.SULFURAS) {
-      item.sellIn = item.sellIn - 1;
     }
     if (item.sellIn < 0) {
       if (item.name != ItemNames.AGED_BRIE) {
