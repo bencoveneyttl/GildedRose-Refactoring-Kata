@@ -11,6 +11,8 @@ export const enum ItemNames {
   CONJURED = "Conjured Mana Cake",
 }
 
+const MAX_QUALITY = 50;
+
 export function updateQuality(items: Item[]): Item[] {
   return items.map(getNewItem);
 }
@@ -18,7 +20,7 @@ export function updateQuality(items: Item[]): Item[] {
 function getNewItem(item: Item): Item {
   const sellIn = getNewSellIn(item);
   // Quality relies on the updated sellIn property.
-  const quality = getNewQuality({...item, sellIn});
+  const quality = clamp(getNewQuality({ ...item, sellIn }), 0, MAX_QUALITY);
   return {
     ...item,
     sellIn,
@@ -35,52 +37,29 @@ function getNewSellIn(item: Item): number {
   }
 }
 
-const MAX_QUALITY = 50;
-
 function getNewQuality(item: Item): number {
-  let newQuality = item.quality;
-  if (
-    item.name != ItemNames.AGED_BRIE &&
-    item.name != ItemNames.BACKSTAGE_PASS
-  ) {
-    if (newQuality > 0) {
-      if (item.name != ItemNames.SULFURAS) {
-        newQuality = newQuality - 1;
+  const expired = item.sellIn < 0;
+  switch (item.name) {
+    case ItemNames.AGED_BRIE:
+      return item.quality + (expired ? 2 : 1);
+    case ItemNames.BACKSTAGE_PASS:
+      if (expired) {
+        return 0;
+      } else if (item.sellIn < 5) {
+        return item.quality + 3;
+      } else if (item.sellIn < 10) {
+        return item.quality + 2;
       }
-    }
-  } else {
-    if (newQuality < MAX_QUALITY) {
-      newQuality = newQuality + 1;
-      if (item.name == ItemNames.BACKSTAGE_PASS) {
-        if (item.sellIn < 10) {
-          if (newQuality < MAX_QUALITY) {
-            newQuality = newQuality + 1;
-          }
-        }
-        if (item.sellIn < 5) {
-          if (newQuality < MAX_QUALITY) {
-            newQuality = newQuality + 1;
-          }
-        }
-      }
-    }
+      return item.quality + 1;
+    case ItemNames.CONJURED:
+      return item.quality - 2;
+    case ItemNames.SULFURAS:
+      return item.quality;
+    default:
+      return item.quality - (expired ? 2 : 1);
   }
-  if (item.sellIn < 0) {
-    if (item.name != ItemNames.AGED_BRIE) {
-      if (item.name != ItemNames.BACKSTAGE_PASS) {
-        if (newQuality > 0) {
-          if (item.name != ItemNames.SULFURAS) {
-            newQuality = newQuality - 1;
-          }
-        }
-      } else {
-        newQuality = 0;
-      }
-    } else {
-      if (newQuality < MAX_QUALITY) {
-        newQuality = newQuality + 1;
-      }
-    }
-  }
-  return newQuality;
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.max(Math.min(value, max), min);
 }
