@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updateQuality should drop the quality of "Backstage Passes" to 0 when the sell by date has passed 1`] = `
+Array [
+  Object {
+    "name": "Backstage passes to a TAFKAL80ETC concert",
+    "quality": 0,
+    "sellIn": -1,
+  },
+  Object {
+    "name": "Backstage passes to a TAFKAL80ETC concert",
+    "quality": 0,
+    "sellIn": -2,
+  },
+  Object {
+    "name": "Backstage passes to a TAFKAL80ETC concert",
+    "quality": 0,
+    "sellIn": -3,
+  },
+]
+`;
+
+exports[`updateQuality should handle empty input 1`] = `Array []`;
+
+exports[`updateQuality should increase the quality for aged brie as time passes 1`] = `
+Array [
+  Object {
+    "name": "Aged Brie",
+    "quality": 6,
+    "sellIn": 4,
+  },
+  Object {
+    "name": "Aged Brie",
+    "quality": 11,
+    "sellIn": 0,
+  },
+  Object {
+    "name": "Aged Brie",
+    "quality": 3,
+    "sellIn": -2,
+  },
+]
+`;
+
+exports[`updateQuality should increase the quality of "Backstage Passes" by 2 when the sell by date is 10 days or less 1`] = `
+Array [
+  Object {
+    "name": "Backstage passes to a TAFKAL80ETC concert",
+    "quality": 12,
+    "sellIn": 5,
+  },
+  Object {
+    "name": "Backstage passes to a TAFKAL80ETC concert",
+    "quality": 12,
+    "sellIn": 9,
+  },
+  Object {
+    "name": "Backstage passes to a TAFKAL80ETC concert",
+    "quality": 11,
+    "sellIn": 10,
+  },
+]
+`;
+
+exports[`updateQuality should increase the quality of "Backstage Passes" by 3 when the sell by date is 5 days or less 1`] = `
+Array [
+  Object {
+    "name": "Backstage passes to a TAFKAL80ETC concert",
+    "quality": 13,
+    "sellIn": 4,
+  },
+  Object {
+    "name": "Backstage passes to a TAFKAL80ETC concert",
+    "quality": 13,
+    "sellIn": 2,
+  },
+  Object {
+    "name": "Backstage passes to a TAFKAL80ETC concert",
+    "quality": 13,
+    "sellIn": 0,
+  },
+]
+`;
+
+exports[`updateQuality should lower SellIn and Quality at the end of each day 1`] = `
+Array [
+  Object {
+    "name": "foo",
+    "quality": 4,
+    "sellIn": 4,
+  },
+  Object {
+    "name": "bar",
+    "quality": 9,
+    "sellIn": 0,
+  },
+  Object {
+    "name": "baz",
+    "quality": 0,
+    "sellIn": 9,
+  },
+]
+`;
+
+exports[`updateQuality should lower quality twice as fast once the sell by date has passed 1`] = `
+Array [
+  Object {
+    "name": "foo",
+    "quality": 4,
+    "sellIn": 0,
+  },
+  Object {
+    "name": "bar",
+    "quality": 3,
+    "sellIn": -1,
+  },
+  Object {
+    "name": "baz",
+    "quality": 3,
+    "sellIn": -2,
+  },
+]
+`;
+
+exports[`updateQuality should never create a negative quality 1`] = `
+Array [
+  Object {
+    "name": "foo",
+    "quality": 0,
+    "sellIn": 0,
+  },
+  Object {
+    "name": "bar",
+    "quality": 0,
+    "sellIn": -2,
+  },
+  Object {
+    "name": "baz",
+    "quality": 0,
+    "sellIn": -2,
+  },
+]
+`;
+
+exports[`updateQuality should never increase quality more than 50 1`] = `
+Array [
+  Object {
+    "name": "Aged Brie",
+    "quality": 50,
+    "sellIn": 0,
+  },
+  Object {
+    "name": "Aged Brie",
+    "quality": 50,
+    "sellIn": -2,
+  },
+  Object {
+    "name": "Aged Brie",
+    "quality": 50,
+    "sellIn": -2,
+  },
+]
+`;
+
+exports[`updateQuality should never increase quality more than 50 2`] = `
+Array [
+  Object {
+    "name": "Aged Brie",
+    "quality": 50,
+    "sellIn": 0,
+  },
+  Object {
+    "name": "Aged Brie",
+    "quality": 50,
+    "sellIn": -2,
+  },
+  Object {
+    "name": "Aged Brie",
+    "quality": 50,
+    "sellIn": -2,
+  },
+]
+`;
+
+exports[`updateQuality should never update the sell by date or quality of "Sulfuras" 1`] = `
+Array [
+  Object {
+    "name": "Sulfuras, Hand of Ragnaros",
+    "quality": 5,
+    "sellIn": 5,
+  },
+  Object {
+    "name": "Sulfuras, Hand of Ragnaros",
+    "quality": 10,
+    "sellIn": 1,
+  },
+  Object {
+    "name": "Sulfuras, Hand of Ragnaros",
+    "quality": 1,
+    "sellIn": 10,
+  },
+]
+`;
