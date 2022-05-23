@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`updateQuality should degrade the quality of "Conjured" items twice as fast 1`] = `
+Array [
+  Object {
+    "name": "Conjured Mana Cake",
+    "quality": 3,
+    "sellIn": 4,
+  },
+  Object {
+    "name": "Conjured Mana Cake",
+    "quality": 8,
+    "sellIn": 0,
+  },
+  Object {
+    "name": "Conjured Mana Cake",
+    "quality": 0,
+    "sellIn": -2,
+  },
+]
+`;
+
 exports[`updateQuality should drop the quality of "Backstage Passes" to 0 when the sell by date has passed 1`] = `
 Array [
   Object {

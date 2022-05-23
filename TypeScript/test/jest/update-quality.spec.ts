@@ -84,12 +84,11 @@ describe("updateQuality", () => {
     ])).toMatchSnapshot();
   });
 
-  it.todo('should degrade the quality of "Conjured" items twice as fast');
-  // it('should degrade the quality of "Conjured" items twice as fast', () => {
-  //   expect(updateQuality([
-  //     { name: ItemNames.CONJURED, quality: 5, sellIn: 5 },
-  //     { name: ItemNames.CONJURED, quality: 10, sellIn: 1 },
-  //     { name: ItemNames.CONJURED, quality: 1, sellIn: -1 },
-  //   ])).toMatchSnapshot();
-  // });
+  it('should degrade the quality of "Conjured" items twice as fast', () => {
+    expect(updateQuality([
+      { name: Names.CONJURED, quality: 5, sellIn: 5 },
+      { name: Names.CONJURED, quality: 10, sellIn: 1 },
+      { name: Names.CONJURED, quality: 1, sellIn: -1 },
+    ])).toMatchSnapshot();
+  });
 });

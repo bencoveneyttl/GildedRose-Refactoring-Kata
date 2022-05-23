@@ -49,7 +49,7 @@ function nextQuality({name, quality, sellIn}: Item): number {
       }
       return quality + 1;
     case Names.CONJURED:
-      return quality - 2;
+      return quality - (expired ? 4 : 2);
     case Names.SULFURAS:
       return quality;
     default:
