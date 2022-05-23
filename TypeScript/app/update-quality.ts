@@ -1,8 +1,8 @@
-export type Item = {
+export type Item = Readonly<{
   name: string;
   sellIn: number;
   quality: number;
-};
+}>;
 
 export const enum Names {
   AGED_BRIE = "Aged Brie",
@@ -13,7 +13,7 @@ export const enum Names {
 
 const MAX_QUALITY = 50;
 
-export function updateQuality(items: Item[]): Item[] {
+export function updateQuality(items: Readonly<Item[]>): Readonly<Item[]> {
   return items.map((item) => {
     const sellIn = nextSellIn(item);
     const quality = clamp(nextQuality({ ...item, sellIn }), 0, MAX_QUALITY);
@@ -25,7 +25,7 @@ export function updateQuality(items: Item[]): Item[] {
   });
 }
 
-function nextSellIn({name, sellIn}: Item): number {
+function nextSellIn({ name, sellIn }: Item): number {
   switch (name) {
     case Names.SULFURAS:
       return sellIn;
@@ -34,7 +34,7 @@ function nextSellIn({name, sellIn}: Item): number {
   }
 }
 
-function nextQuality({name, quality, sellIn}: Item): number {
+function nextQuality({ name, quality, sellIn }: Item): number {
   const expired = sellIn < 0;
   switch (name) {
     case Names.AGED_BRIE:
@@ -57,6 +57,6 @@ function nextQuality({name, quality, sellIn}: Item): number {
   }
 }
 
-function clamp(value: number, min: number, max: number) {
+function clamp(value: number, min: number, max: number): number {
   return Math.max(Math.min(value, max), min);
 }
