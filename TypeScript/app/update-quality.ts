@@ -11,16 +11,13 @@ export const enum Names {
   CONJURED = "Conjured Mana Cake",
 }
 
-const MAX_QUALITY = 50;
-
 export function updateQuality(items: Readonly<Item[]>): Readonly<Item[]> {
   return items.map((item) => {
     const sellIn = nextSellIn(item);
-    const quality = clamp(nextQuality({ ...item, sellIn }), 0, MAX_QUALITY);
     return {
       ...item,
       sellIn,
-      quality,
+      quality: nextQuality({ ...item, sellIn }),
     };
   });
 }
@@ -38,25 +35,22 @@ function nextQuality({ name, quality, sellIn }: Item): number {
   const expired = sellIn < 0;
   switch (name) {
     case Names.AGED_BRIE:
-      return quality + (expired ? 2 : 1);
+      return clampQuality(quality + (expired ? 2 : 1));
     case Names.BACKSTAGE_PASS:
-      if (expired) {
-        return 0;
-      } else if (sellIn < 5) {
-        return quality + 3;
-      } else if (sellIn < 10) {
-        return quality + 2;
-      }
-      return quality + 1;
+      return clampQuality(
+        expired ? 0 : quality + (sellIn < 5 ? 3 : sellIn < 10 ? 2 : 1)
+      );
     case Names.CONJURED:
-      return quality - (expired ? 4 : 2);
+      return clampQuality(quality - (expired ? 4 : 2));
     case Names.SULFURAS:
       return quality;
     default:
-      return quality - (expired ? 2 : 1);
+      return clampQuality(quality - (expired ? 2 : 1));
   }
 }
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(Math.min(value, max), min);
+const MAX_QUALITY = 50;
+const MIN_QUALITY = 0;
+function clampQuality(value: number): number {
+  return Math.max(Math.min(value, MAX_QUALITY), MIN_QUALITY);
 }
